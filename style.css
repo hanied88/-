@@ -113,14 +113,16 @@ body {
 */
 @keyframes jump-from-bottom {
     0% {
-        transform: translateY(100vh) translateX(0) scale(1); /* من خارج الشاشة السفلى */
+        /* تأثير Squash and Stretch: تمدد عمودي وضغط أفقي عند الانطلاق */
+        transform: translateY(100vh) translateX(0) scale(0.9, 1.1); /* ضغط أفقي (0.9) وتمدد عمودي (1.1) */
         opacity: 0;
     }
     10% {
         opacity: 1;
     }
     40% {
-        transform: translateY(-10vh) translateX(0) scale(1.1); /* فوق الرقم بقليل (أعلى نقطة) */
+        /* تأثير Squash and Stretch: ضغط عمودي وتمدد أفقي عند القمة */
+        transform: translateY(-10vh) translateX(0) scale(1.2, 0.8); /* تمدد أفقي (1.2) وضغط عمودي (0.8) */
         animation-timing-function: cubic-bezier(0.17, 0.84, 0.44, 1); /* تباطؤ عند القمة */
     }
     100% {
@@ -146,6 +148,34 @@ body {
     }
     90% {
         transform: translateX(-100vw) translateY(-20vh) scale(1); /* مسار مستقيم أفقي */
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-150vw) translateY(-20vh) scale(1); /* خروج من الشاشة اليسرى */
+        opacity: 0;
+    }
+}
+
+/* حركة التصفير الدرامية: تباطؤ تحت الزر ثم تسارع للخروج */
+@keyframes fly-right-to-left-slow {
+    0% {
+        transform: translateX(100vw) translateY(-20vh) scale(1); /* من خارج الشاشة اليمين، في الجزء العلوي */
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    40% {
+        transform: translateX(30vw) translateY(-20vh) scale(1); /* تباطؤ قبل الوصول للمنتصف */
+        animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); /* تباطؤ */
+    }
+    60% {
+        transform: translateX(-10vw) translateY(-20vh) scale(1); /* أبطأ نقطة تحت الزر */
+        animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); /* تباطؤ */
+    }
+    90% {
+        transform: translateX(-100vw) translateY(-20vh) scale(1); /* تسارع للخروج */
+        animation-timing-function: cubic-bezier(0.76, 0.04, 0.73, 0.75); /* تسارع */
         opacity: 1;
     }
     100% {

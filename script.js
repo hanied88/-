@@ -3,6 +3,7 @@ const display = document.getElementById('counter-display');
 const incrementButton = document.getElementById('increment-button');
 const resetButton = document.getElementById('reset-button');
 let count = 0;
+let resetCount = 0; // لتتبع عدد مرات التصفير
 
 // عناصر الكلمات الثلاث
 const word1 = document.getElementById('word1'); // عبادة
@@ -82,6 +83,11 @@ function animateWordsJump() {
 
 // دالة لتطبيق حركة الطيران من اليمين لليسار (عند التصفير)
 function animateWordsFly() {
+    resetCount++; // زيادة عداد التصفير
+    const isDramatic = resetCount % 3 === 2; // هل هي نقرة درامية (المرة الثانية ثم كل 3 مرات بعد ذلك)
+    const animationName = isDramatic ? 'fly-right-to-left-slow' : 'fly-right-to-left';
+    const baseDuration = isDramatic ? 3.0 : 1.8; // مدة أطول للحركة الدرامية
+    const resetDelay = isDramatic ? 1200 : 600; // تأخير أطول لتصفير العداد في الحركة الدرامية
     // إزالة الحركة السابقة
     word1.style.animation = 'none';
     word2.style.animation = 'none';
@@ -100,21 +106,21 @@ function animateWordsFly() {
     
     // الكلمة الأولى: تطير أولاً
     word1.style.color = getRandomColor();
-    word1.style.animation = 'fly-right-to-left 1.8s forwards'; // إبطاء إضافي بنسبة 50% (1.2s * 1.5 = 1.8s)
+    word1.style.animation = `${animationName} ${baseDuration}s forwards`;
 
     // الكلمة الثانية: تطير بعدها بقليل
     setTimeout(() => {
         word2.style.color = getRandomColor();
-        word2.style.animation = 'fly-right-to-left 1.98s forwards'; // إبطاء إضافي بنسبة 50% (1.32s * 1.5 = 1.98s)
+        word2.style.animation = `${animationName} ${baseDuration + 0.18}s forwards`;
     }, 50);
 
     // الكلمة الثالثة: تطير أخيراً
     setTimeout(() => {
         word3.style.color = getRandomColor();
-        word3.style.animation = 'fly-right-to-left 2.16s forwards'; // إبطاء إضافي بنسبة 50% (1.44s * 1.5 = 2.16s)
+        word3.style.animation = `${animationName} ${baseDuration + 0.36}s forwards`;
     }, 100);
     
-    // عندما تمر الكلمات من فوق الرقم (بعد 600ms تقريباً)، نصفر العداد
+    // عندما تمر الكلمات من فوق الرقم، نصفر العداد
     setTimeout(() => {
         count = 0;
         display.textContent = count;
@@ -123,7 +129,7 @@ function animateWordsFly() {
         setTimeout(() => {
             display.style.transform = 'scale(1)';
         }, 200);
-    }, 400);
+    }, resetDelay);
 }
 
 // دالة زيادة العداد
