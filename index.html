@@ -3,21 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>اقعد يا عبادة</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
 </head>
 <body>
     <div id="app-container">
+        <!-- عرض العداد -->
         <div id="counter-display">0</div>
 
+        <!-- زر العد (الدائرة الخضراء) -->
         <button id="increment-button" class="circle-button">
-            اضغط
+            جرب تضغط!!
         </button>
 
+        <!-- زر التصفير -->
         <button id="reset-button" class="reset-button">
-            تصفير العداد
+            تبغا تجرب ثاني!
         </button>
+        
+        <!-- حاوية الكلمات الثلاث -->
+        <div id="word-container">
+            <span id="word1" class="jumping-word">عبادة</span>
+            <span id="word2" class="jumping-word">يا</span>
+            <span id="word3" class="jumping-word">اقعد</span>
+        </div>
     </div>
+
+    <!-- ربط ملف JavaScript -->
+    <!-- ربط ملف JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>

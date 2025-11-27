@@ -1,89 +1,177 @@
+/* إعدادات عامة */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    background-color: white; /* الخلفية البيضاء */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-    font-family: Arial, sans-serif;
-    overflow: hidden; /* لمنع ظهور شريط التمرير عند القفز */
+    overflow: hidden;
 }
 
+/* الحاوية الرئيسية */
 #app-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 50px; /* مسافة بين العناصر */
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    position: relative;
 }
 
+/* عرض العداد */
 #counter-display {
-    font-size: 80px;
+    font-size: 120px;
     font-weight: bold;
-    color: black;
+    color: white;
+    margin-bottom: 40px;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    user-select: none;
+    transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
+/* زر العد (الدائرة الخضراء) */
 .circle-button {
     width: 200px;
     height: 200px;
-    background-color: green;
-    color: white;
-    border-radius: 50%; /* شكل دائري */
+    border-radius: 50%;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
     border: none;
-    font-size: 30px;
+    color: white;
+    font-size: 28px;
     font-weight: bold;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* ظل أنيق */
     cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    margin-bottom: 30px;
 }
 
+.circle-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* زر التصفير */
 .reset-button {
-    background-color: gray;
+    padding: 15px 40px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 2px solid white;
+    border-radius: 30px;
     color: white;
-    padding: 10px 20px;
-    border-radius: 10px;
-    border: none;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
     cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
 }
 
-/* ---------------------------------------------------- */
-/* تنسيق الأرقام والكلمات الجديدة */
-/* ---------------------------------------------------- */
+.reset-button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.reset-button:active {
+    transform: translateY(0);
+}
+
+/* حاوية الكلمات */
 #word-container {
-    position: fixed; /* لتثبيت الموقع بالنسبة للشاشة */
-    bottom: 0px; /* جعل الموقع الأولي أسفل الشاشة تماماً */
+    position: fixed;
+    bottom: -100px; /* خارج الشاشة من الأسفل */
+    left: 0;
     width: 100%;
     text-align: center;
-    padding-bottom: 20px;
-    display: flex; /* لترتيب الكلمات أفقياً */
+    display: flex;
     justify-content: center;
-    gap: 15px; /* مسافة بين الكلمات */
+    gap: 25px;
+    pointer-events: none;
+    z-index: 1000;
 }
 
+/* تنسيق الكلمات */
 .jumping-word {
-    font-size: 30px;
+    font-size: 48px; /* خط أكبر كما طلبت */
     font-weight: bold;
-    opacity: 1; /* تصحيح: ظهور الكلمات في البداية */
-    display: inline-block; /* ضروري لتطبيق التحريك */
-    position: relative; /* ضروري لتطبيق خاصية transform */
-    transform: translateY(0); /* الموقع الأولي */
+    opacity: 0; /* مخفية من البداية */
+    display: inline-block;
+    position: relative;
+    transform: translateY(0);
+    text-shadow: 0 0 5px #000, 0 0 10px #000, 0 0 15px #000, 0 0 20px #fff; /* تباين عالي */
+    color: white;
 }
 
-/* ---------------------------------------------------- */
-/* الرسوم المتحركة الأساسية: القفز (تحديد القفزة الرأسية) */
-/* (cubic-bezier(0.5, 0, 0.5, 1) هي التي تعطي الحركة الفيزيائية) */
-/* ---------------------------------------------------- */
-@keyframes jump-up-and-down {
+/* الرسوم المتحركة: القفز الفيزيائي من خارج الشاشة (ككرة تنطلق) */
+/* مبادئ التحريك الـ12:
+   - Ease In/Out: تسارع عند الانطلاق وتباطؤ عند القمة (Squash and Stretch)
+   - Arcs: مسار منحني (Arc)
+   - Follow Through: الخروج من الشاشة (Follow Through)
+*/
+@keyframes jump-from-bottom {
     0% {
-        transform: translate(0, 0);
-        opacity: 1; 
+        transform: translateY(100vh) translateX(0) scale(1); /* من خارج الشاشة السفلى */
+        opacity: 0;
     }
-    50% {
-        transform: translate(0, -250px); /* أعلى نقطة للقفز */
+    10% {
+        opacity: 1;
+    }
+    40% {
+        transform: translateY(-10vh) translateX(0) scale(1.1); /* فوق الرقم بقليل (أعلى نقطة) */
+        animation-timing-function: cubic-bezier(0.17, 0.84, 0.44, 1); /* تباطؤ عند القمة */
+    }
+    100% {
+        transform: translateY(100vh) translateX(0) scale(1); /* هبوط متسارع إلى خارج الشاشة */
+        opacity: 0;
+        animation-timing-function: cubic-bezier(0.76, 0.04, 0.73, 0.75); /* تسارع عند الهبوط */
+    }
+}
+
+/* حركة التصفير: الكلمات تطير من اليمين إلى اليسار (مسار مستقيم علوي) */
+/* مبادئ التحريك الـ12:
+   - Straight Ahead Action: مسار مستقيم
+   - Exaggeration: سرعة مبالغ فيها
+   - Timing: توقيت دقيق لتصفير العداد
+*/
+@keyframes fly-right-to-left {
+    0% {
+        transform: translateX(100vw) translateY(-20vh) scale(1); /* من خارج الشاشة اليمين، في الجزء العلوي */
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        transform: translateX(-100vw) translateY(-20vh) scale(1); /* مسار مستقيم أفقي */
         opacity: 1;
     }
     100% {
-        transform: translate(0, 0);
-        opacity: 0; /* اختفاء الكلمات بعد الهبوط */
+        transform: translateX(-150vw) translateY(-20vh) scale(1); /* خروج من الشاشة اليسرى */
+        opacity: 0;
+    }
+}
+
+/* تحسينات للأجهزة المحمولة */
+@media (max-width: 600px) {
+    #counter-display {
+        font-size: 80px;
+    }
+    
+    .circle-button {
+        width: 160px;
+        height: 160px;
+        font-size: 22px;
+    }
+    
+    .jumping-word {
+        font-size: 38px;
+    }
+    
+    .reset-button {
+        font-size: 18px;
+        padding: 12px 30px;
     }
 }
