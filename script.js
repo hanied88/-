@@ -84,10 +84,10 @@ function animateWordsJump() {
 // دالة لتطبيق حركة الطيران من اليمين لليسار (عند التصفير)
 function animateWordsFly() {
     resetCount++; // زيادة عداد التصفير
-    const isDramatic = resetCount % 3 === 0; // هل هي نقرة درامية (مضاعفات 3)
+    const isDramatic = resetCount % 3 === 2; // هل هي نقرة درامية (المرة الثانية ثم كل 3 مرات بعد ذلك)
     const animationName = isDramatic ? 'fly-right-to-left-slow' : 'fly-right-to-left';
-    const baseDuration = isDramatic ? 3.0 : 1.8; // مدة أطول للحركة الدرامية
-    const resetDelay = isDramatic ? 1200 : 600; // تأخير أطول لتصفير العداد في الحركة الدرامية
+    const baseDuration = isDramatic ? 3.9 : 2.34; // زيادة الإبطاء بنسبة 30% (3.0 * 1.3 = 3.9) و (1.8 * 1.3 = 2.34)
+    const resetDelay = isDramatic ? 1560 : 780; // زيادة تأخير التصفير بنسبة 30% (1200 * 1.3 = 1560) و (600 * 1.3 = 780)
     // إزالة الحركة السابقة
     word1.style.animation = 'none';
     word2.style.animation = 'none';
