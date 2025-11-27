@@ -6,6 +6,7 @@ body {
     height: 100vh;
     margin: 0;
     font-family: Arial, sans-serif;
+    overflow: hidden; /* لمنع ظهور شريط التمرير عند القفز */
 }
 
 #app-container {
@@ -43,4 +44,46 @@ body {
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
+}
+
+/* ---------------------------------------------------- */
+/* تنسيق الأرقام والكلمات الجديدة */
+/* ---------------------------------------------------- */
+#word-container {
+    position: fixed; /* لتثبيت الموقع بالنسبة للشاشة */
+    bottom: 0px; /* جعل الموقع الأولي أسفل الشاشة تماماً */
+    width: 100%;
+    text-align: center;
+    padding-bottom: 20px;
+    display: flex; /* لترتيب الكلمات أفقياً */
+    justify-content: center;
+    gap: 15px; /* مسافة بين الكلمات */
+}
+
+.jumping-word {
+    font-size: 30px;
+    font-weight: bold;
+    opacity: 1; /* تصحيح: ظهور الكلمات في البداية */
+    display: inline-block; /* ضروري لتطبيق التحريك */
+    position: relative; /* ضروري لتطبيق خاصية transform */
+    transform: translateY(0); /* الموقع الأولي */
+}
+
+/* ---------------------------------------------------- */
+/* الرسوم المتحركة الأساسية: القفز (تحديد القفزة الرأسية) */
+/* (cubic-bezier(0.5, 0, 0.5, 1) هي التي تعطي الحركة الفيزيائية) */
+/* ---------------------------------------------------- */
+@keyframes jump-up-and-down {
+    0% {
+        transform: translate(0, 0);
+        opacity: 1; 
+    }
+    50% {
+        transform: translate(0, -250px); /* أعلى نقطة للقفز */
+        opacity: 1;
+    }
+    100% {
+        transform: translate(0, 0);
+        opacity: 0; /* اختفاء الكلمات بعد الهبوط */
+    }
 }
